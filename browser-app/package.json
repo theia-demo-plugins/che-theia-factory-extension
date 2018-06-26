@@ -16,7 +16,7 @@
     "@theia/terminal": "0.3.11",
     "@theia/typescript": "0.3.11",
     "@theia/workspace": "0.3.11",
-    "@eclipse/che-theia-factory": "0.0.1"
+    "@eclipse-che/theia-factory-extension": "0.0.1"
   },
   "devDependencies": {
     "@theia/cli": "0.3.11"

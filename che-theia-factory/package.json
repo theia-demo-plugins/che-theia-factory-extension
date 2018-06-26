@@ -1,0 +1,32 @@
+{
+  "name": "@eclipse/che-theia-factory",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.0.1",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@eclipse-che/workspace-client": "latest",
+    "@theia/core": "0.3.11",
+    "@theia/git": "0.3.11",
+    "axios": "0.18.0"
+  },
+  "devDependencies": {
+    "rimraf": "2.6.2",
+    "typescript": "2.7.2"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/che-theia-factory-frontend-module"
+    }
+  ]
+}

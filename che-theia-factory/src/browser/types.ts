@@ -13,4 +13,25 @@ import { IWorkspaceConfig } from "@eclipse-che/workspace-client";
 
 export interface IFactory {
     workspace: IWorkspaceConfig;
+    ide?: {
+        onAppLoaded?: {
+            actions?: Array<IFactoryAction>
+        };
+        onProjectsLoaded?: {
+            actions?: Array<IFactoryAction>
+        };
+        onAppClosed?: {
+            actions?: Array<IFactoryAction>
+        };
+    }
+}
+
+export interface IFactoryAction {
+    id: string,
+    properties?: {
+        name?: string,
+        file?: string,
+        greetingTitle?: string,
+        greetingContentUrl?: string
+    }
 }

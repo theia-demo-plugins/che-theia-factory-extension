@@ -10,12 +10,14 @@
  */
 
 
+import { FactoryTheiaManager } from './factory-manager';
 import { FactoryTheiaClient } from './factory-theia-client';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser';
 
 import { ContainerModule } from "inversify";
 
 export default new ContainerModule(bind => {
+    bind(FactoryTheiaManager).toSelf().inSingletonScope();
     bind(FactoryTheiaClient).toSelf().inSingletonScope();
     bind(FrontendApplicationContribution).toDynamicValue(c => c.container.get(FactoryTheiaClient));
 });

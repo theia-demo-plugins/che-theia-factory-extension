@@ -10,6 +10,7 @@ cache:
 branches:
   only:
   - master
+  - /^CHE-.*$/
 env:
   global:
     - NODE_OPTIONS="--max_old_space_size=4096"
@@ -31,6 +32,12 @@ jobs:
         script: cd che-theia-factory && npm version -no-git-tag-version "0.0.1-$(date +%s)" && npm publish --access public
         on:
           branch: master
+        skip_cleanup: true
+      - provider: script
+        script: cd che-theia-factory && npm version -no-git-tag-version "0.0.1-${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}" && npm publish --access public
+        on:
+          all_branches: true
+          condition: ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} =~ ^CHE-\/.*$
         skip_cleanup: true
       - provider: script
         script: cd che-theia-factory && npm version -no-git-tag-version && npm publish --access public

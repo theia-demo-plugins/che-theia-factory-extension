@@ -27,17 +27,18 @@ jobs:
     before_deploy:
       - printf "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}\n" >> ~/.npmrc
       - 
-    deploy:
+    deploy: # WIP env variable is set only in the https://travis-ci.org/theia-demo-plugins/che-theia-factory-extension jobs
       - provider: script
-        script: cd che-theia-factory && npm version -no-git-tag-version "0.0.1-$(date +%s)" && npm publish --access public
-        on:
-          branch: master
-        skip_cleanup: true
-      - provider: script
-        script: cd che-theia-factory && find -name "*.*" -type f -exec sed -i 's/\@eclipse-che\/theia-factory-extension/\@wiptheia\/theia-factory-extension/g' {} \; && npm version -no-git-tag-version "0.0.1-${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}-$(date +%s)" && npm publish --access public
+        script: echo "deploying master @eclipse-che" && cd che-theia-factory && npm version -no-git-tag-version "0.0.1-$(date +%s)" && npm publish --access public
         on:
           all_branches: true
-          condition: ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} != "master"
+          condition: "! -v WIP && ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} == 'master'"
+        skip_cleanup: true
+      - provider: script
+        script: echo "deploying all branches @wip-theia" && cd che-theia-factory && find -name "*.*" -type f -exec sed -i 's/\@eclipse-che\/theia-factory-extension/\@wiptheia\/theia-factory-extension/g' {} \; && npm version -no-git-tag-version "0.0.1-${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}-$(date +%s)" && npm publish --access public
+        on:
+          all_branches: true
+          condition: -v WIP
         skip_cleanup: true
       - provider: script
         script: cd che-theia-factory && npm version -no-git-tag-version && npm publish --access public

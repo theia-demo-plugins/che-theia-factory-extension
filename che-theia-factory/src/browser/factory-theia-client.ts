@@ -59,6 +59,8 @@ export class FactoryTheiaClient implements FrontendApplicationContribution {
                 @inject(FrontendApplicationStateService) protected readonly frontendApplicationStateService: FrontendApplicationStateService,
                 @inject(FactoryTheiaManager) private readonly factoryManager: FactoryTheiaManager) {
         this.frontendApplicationStateService.reachedState('ready').then(() => {
+            console.info("ready");
+            this.onReady();
             this.appLoadedEmitter.fire({actions: this.onAppLoadedActions});
         });
 
@@ -100,6 +102,11 @@ export class FactoryTheiaClient implements FrontendApplicationContribution {
     }
 
     async onStart(app: FrontendApplication) {
+        console.info("onStart");
+    }
+
+    async onReady() {
+        console.info("initializeLayout");
         const factory = await this.factoryManager.fetchCurrentFactory();
         if (!factory) {
             return;

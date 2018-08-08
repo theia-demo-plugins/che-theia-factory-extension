@@ -11,7 +11,6 @@
 import { injectable, inject } from 'inversify';
 import { Emitter } from '@theia/core';
 import { MessageService } from '@theia/core/lib/common';
-import { FrontendApplicationContribution, FrontendApplication } from '@theia/core/lib/browser';
 import { EnvVariablesServer, EnvVariable } from '@theia/core/lib/common/env-variables';
 import { Git, Repository } from '@theia/git/lib/common';
 import { IProjectConfig } from '@eclipse-che/workspace-client';
@@ -37,7 +36,7 @@ export enum ActionId {
  * - checkout branch if needed
  */
 @injectable()
-export class FactoryTheiaClient implements FrontendApplicationContribution {
+export class FactoryTheiaClient {
 
     private readonly appLoadedEmitter = new Emitter<{ actions: Array<IFactoryAction> }>();
     private readonly projectsLoadedEmitter = new Emitter<{ actions: Array<IFactoryAction> }>();
@@ -59,7 +58,6 @@ export class FactoryTheiaClient implements FrontendApplicationContribution {
                 @inject(FrontendApplicationStateService) protected readonly frontendApplicationStateService: FrontendApplicationStateService,
                 @inject(FactoryTheiaManager) private readonly factoryManager: FactoryTheiaManager) {
         this.frontendApplicationStateService.reachedState('ready').then(() => {
-            console.info("ready");
             this.onReady();
             this.appLoadedEmitter.fire({actions: this.onAppLoadedActions});
         });
@@ -74,7 +72,6 @@ export class FactoryTheiaClient implements FrontendApplicationContribution {
             });
         });
         this.onProjectsLoaded((event: { actions: Array<IFactoryAction> }) => {
-
             event.actions.reduce((promise: Promise<void>, onProjectsLoadedAction: IFactoryAction) => {
                 return promise.then(() => {
                     switch (onProjectsLoadedAction.id) {
@@ -101,12 +98,7 @@ export class FactoryTheiaClient implements FrontendApplicationContribution {
         });
     }
 
-    async onStart(app: FrontendApplication) {
-        console.info("onStart");
-    }
-
     async onReady() {
-        console.info("initializeLayout");
         const factory = await this.factoryManager.fetchCurrentFactory();
         if (!factory) {
             return;

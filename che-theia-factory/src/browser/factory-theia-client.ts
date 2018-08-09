@@ -109,6 +109,8 @@ export class FactoryTheiaClient {
             return;
         }
 
+        console.info("Che Theia factory: running frontend actions ...");
+
         const projectsRootEnvVar = this.getEnvVariable('CHE_PROJECTS_ROOT');
         if (projectsRootEnvVar && projectsRootEnvVar.value) {
             this.projectsRoot = projectsRootEnvVar.value;

@@ -115,6 +115,7 @@ export class FactoryTheiaClient implements FrontendApplicationContribution {
             return;
         }
 
+        console.info("Starting Factory setup ...");
         const projectsRootEnvVar = this.getEnvVariable('CHE_PROJECTS_ROOT');
         if (projectsRootEnvVar && projectsRootEnvVar.value) {
             this.projectsRoot = projectsRootEnvVar.value;
